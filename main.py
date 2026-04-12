@@ -21,7 +21,7 @@ class Purchases:
             json.dump(self.data, file, indent=4)
 
     def add_pur(self):
-        new_pur = input("Введіть вашу покупку: ")
+        new_pur = input("Введіть вашу покупку: ").strip()
         if new_pur.strip() == "":
             print("Помилка: пустий рядок")
             return
@@ -63,17 +63,20 @@ class Purchases:
             print(f"{i}. {el['name'].capitalize()}, done - {status}")
 
     def mark_done(self):
-        self.show_purs()
-        n_to_done = input("Введіть номер покупки для відмітки: ").strip()
-        if not n_to_done.isdigit():
-            print("Помилка: введіть число")
+        if not self.show_purs():
             return
-        n_to_done = int(n_to_done)
-        if 1 <= n_to_done <= len(self.data):
-            self.data[n_to_done - 1]['done'] = True
-            print("Покупка відмічена")
         else:
-            print("Помилка: вийдено за межі")
+            n_to_done = input("Введіть номер покупки для відмітки: ").strip()
+            if not n_to_done.isdigit():
+                print("Помилка: введіть число")
+                return
+            n_to_done = int(n_to_done)
+            if 1 <= n_to_done <= len(self.data):
+                self.data[n_to_done - 1]['done'] = True
+                print("Покупка відмічена")
+            else:
+                print("Помилка: вийдено за межі")
+
 
     def search_pur(self):
         word = input("Введіть слово (для показу покупок з цим словом): ").strip().lower()
